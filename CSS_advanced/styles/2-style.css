@@ -10,3 +10,11 @@ a {
 .visually_hidden {
     display: none;
 }
+
+.card-category {
+    color: #D73953
+}
+
+.section-tagline {
+    color: #D73953
+}
