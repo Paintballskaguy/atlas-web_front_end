@@ -22,4 +22,9 @@ a {
 
 .root {
     color-primary: var(#d73953)
+    color-black: var(#090909)
+    color-white: var(#ffffff)
+    color-light-grey: var(#f3f3f3)
+    color-dark-grey: var(#353535)
+    text-color: car(--color-black)
 }
