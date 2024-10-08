@@ -110,11 +110,11 @@ a:active {
 
 .section-header {
     text-align: var(--section-header-align);
-    padding: var(--section-padding);
+    padding: var(--section-header-padding);
 }
 
 .section-body {
-    padding: var(--section-padding);
+    padding: var(--section-header-padding);
 }
 
 .section-footer {
@@ -123,7 +123,7 @@ a:active {
 }
 
 .footer {
-    padding: var(--footer-padding);
+    padding: var(--section-body-footer);
 }
 
 .section-title {
