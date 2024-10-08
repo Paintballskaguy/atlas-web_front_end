@@ -2,7 +2,7 @@ html {
     scroll-behavior: smooth;
 }
 
-body { color: #161616}
+body { color: --text-color}
 a {
     color: #161616
 }
@@ -12,11 +12,11 @@ a {
 }
 
 .card-category {
-    color: #D73953
+    color: var(--color-primary)
 }
 
 .section-tagline {
-    color: #D73953
+    color: var(--color-primary)
 }
 
 
