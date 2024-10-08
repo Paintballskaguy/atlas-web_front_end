@@ -120,7 +120,7 @@ a:active {
 
 .section-footer {
     text-align: var(--section-footer-align);
-    padding: var(--section-body-footer); 
+    padding: var(--section-footer-padding); 
 }
 
 .footer {
