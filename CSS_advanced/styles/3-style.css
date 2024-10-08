@@ -20,7 +20,7 @@ a {
 }
 
 
-.root {
+:root {
     color-primary: var(#d73953)
     color-black: var(#090909)
     color-white: var(#ffffff)
