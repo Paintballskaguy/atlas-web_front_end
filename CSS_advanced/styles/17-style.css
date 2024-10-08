@@ -118,12 +118,12 @@ a:active {
 }
 
 .section-footer {
-    padding: var(--section-padding);
+    padding: var(--section-body-footer);
     text-align: var(--section-footer-align);
 }
 
 .footer {
-    padding: var(--section-body-footer);
+    padding: var(--footer-padding);
 }
 
 .section-title {
