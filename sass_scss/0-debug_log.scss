@@ -1,5 +1,3 @@
 
 /* debug to write hello world */
-:$debug {
-    "Hello World"
-} 
+$debug "Hello world";
