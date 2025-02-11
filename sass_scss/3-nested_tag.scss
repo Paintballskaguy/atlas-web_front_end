@@ -1,0 +1,12 @@
+//Assigning no margin or padding, in nested form
+
+$text-color: #3D3D3D;
+$backgroundcolor: #6D6D6D;
+
+body {
+    margin: 0;
+    padding: 0;
+
+body p {
+    margin: 10px;
+}
