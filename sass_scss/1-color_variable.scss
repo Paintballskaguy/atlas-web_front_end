@@ -1,7 +1,10 @@
 // Assigns this color #3D3d3d
 
-$color: #3D3d3d;
+$text-color: #3D3d3d;
 
-body, p {
-    color: $color;
+body {
+    color: $text-color;
+}
+p {
+    color: $text-color;
 }
