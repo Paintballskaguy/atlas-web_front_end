@@ -1,0 +1,17 @@
+//ASsigning text color and background color to variables.
+
+$text-color: #3D3D3D;
+$backgroundcolor: #6D6D6D;
+
+body {
+    color: $text-color;
+    background-color: $backgroundcolor;
+}
+h2 {
+    color: $text-color;
+}
+
+p {
+    color: $text-color;
+}
+
