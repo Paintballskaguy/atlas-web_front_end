@@ -1,0 +1,15 @@
+// using import to bring over variables from other scss files
+
+@import "10-colors.scss";
+
+.red {
+    color: $red;
+  }
+  
+  .green {
+    color: $green;
+  }
+  
+  .blue {
+    color: $blue;
+  }
