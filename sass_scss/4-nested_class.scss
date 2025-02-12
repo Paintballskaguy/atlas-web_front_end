@@ -8,4 +8,7 @@ body {
     >.red {
         color: #FF0000;
     }
+    .red {
+        color: $text-color;
+    }
 }
