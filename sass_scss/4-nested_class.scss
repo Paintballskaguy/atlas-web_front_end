@@ -5,10 +5,7 @@ $text-color: #3D3D3D;
 body {
     color: $text-color;
 
-    >.red {
-        color: #FF0000;
-    }
     .red {
-        color: $text-color;
+        color: #FF0000;
     }
 }
