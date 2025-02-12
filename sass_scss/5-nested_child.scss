@@ -1,0 +1,12 @@
+// assigning text color and making sure to target the child portion.
+
+$text-color: #3D3D3D;
+$other-color: $FF0000;
+
+body [
+    color: $text-color;
+
+    >.red {
+        color: $other-color;
+    }
+]
