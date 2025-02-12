@@ -1,0 +1,12 @@
+//assigning the button color
+
+$text-color: #00FF00;
+$other-color: #FF0000;
+
+button {
+    color: $other-color;
+
+    &:hover {
+        color: $text-color;
+    }
+}
