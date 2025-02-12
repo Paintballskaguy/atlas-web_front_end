@@ -374,6 +374,13 @@
   
   /*** 4. CARD ***/
   
+  /* Section Latest news ============================= */
+
+ .section-latest-news .row {
+    display: flex;
+    flex-direction:row-reverse;
+  }
+
   /* Card (all styles)
       ============================= */
   
