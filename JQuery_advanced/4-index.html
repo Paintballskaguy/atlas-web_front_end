@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Task 4</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+    </head>
+    <body>
+        <script type="application/javascript">
+            function createFamilyTree() {
+                $('body').append(
+                    $('<table>').append(
+                        $('<thead>').append(
+                            $('<tr>').append(
+                                $('<th>').text('Firstname'),
+                                $('<th>').text('Lastname')
+                            )
+                        ),
+                        $('<tbody>').append(
+                            $('<tr>').append(
+                                $('<td>').text('Guillaume'),
+                                $('<td>').text('Salva')
+                            ),
+                            $('<tr>').append(
+                                $('<td>').text('Paulette'),
+                                $('<td>').text('Salva')
+                            ),
+                            $('<tr>').append(
+                                $('<td>').text('Antoine'),
+                                $('<td>').text('Salva')
+                            )
+                        )
+                    )
+                );
+            }
+
+            function replaceFamilyTree() {
+                // clear previous tbody content and add new row //
+                $('tbody').empty().append(
+                    $('<tr>').append(
+                        $('<td>').text('Gerard'),
+                        $('<td>').text('Bonissa')
+                    )
+                );
+            }
+            // bring in the function when the document is ready //
+            $(document).ready(function() {
+                createFamilyTree();
+                replaceFamilyTree();
+            });
+        </script>
+    </body>
+</html>
