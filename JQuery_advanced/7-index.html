@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Wikipedia Search</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <style>
+            form {
+                margin-bottom: 20px;
+            }
+            input[type="text"] {
+                padding: 8px;
+                width: 300px;
+            }
+            input[type="submit"] {
+                padding: 8px 15px;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            li {
+                margin-bottom: 20px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 15px;
+            }
+            b {
+                font-size: 1.1em;
+            }
+            .snippet {
+                margin-top: 5px;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="application/javascript">
+            // create search form //
+            function createSearchForm() {
+                const form = $('<form>').append(
+                    $('<input>').attr('type', 'text').attr('placeholder', 'Search Wikipedia...'),
+                    $('<input>').attr('type', 'submit').attr('value', 'Search')
+                );
+                
+                const resultsList = $('<ul>');
+                
+                form.on('submit', function(e) {
+                    e.preventDefault();
+                    const searchTerm = $('input[type="text"]').val().trim();
+                    if (searchTerm) {
+                        resultsList.empty();
+                        queryWikipedia(searchTerm);
+                    }
+                });
+                
+                $('body').append(form, resultsList);
+            }
+
+            // add a new article to results list //
+            function addNewArticle(id, title, snippet) {
+                const listItem = $('<li>').append(
+                    $('<p>').append(
+                        $('<span>').text(id + ' - '),
+                        $('<b>').text(title)
+                    ),
+                    $('<p>').addClass('snippet').html(snippet)
+                );
+                
+                $('ul').append(listItem);
+            }
+
+            // query Wikipedia API
+            function queryWikipedia(search) {
+                $.ajax({
+                    url: 'https://en.wikipedia.org/w/api.php',
+                    data: {
+                        action: 'query',
+                        list: 'search',
+                        srsearch: search,
+                        format: 'json',
+                        origin: '*'
+                    },
+                    dataType: 'jsonp',
+                    success: function(response) {
+                        if (response.query && response.query.search) {
+                            response.query.search.forEach(result => {
+                                addNewArticle(
+                                    result.pageid.toString(),
+                                    result.title,
+                                    result.snippet
+                                );
+                            });
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            $(function() {
+                createSearchForm();
+            });
+        </script>
+    </body>
+</html>
