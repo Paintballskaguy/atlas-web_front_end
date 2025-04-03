@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Wikipedia Search with Loading State</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <style>
+            form {
+                margin-bottom: 20px;
+            }
+            input[type="text"] {
+                padding: 8px;
+                width: 300px;
+            }
+            input[type="submit"] {
+                padding: 8px 15px;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            #results-list li {
+                margin-bottom: 20px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 15px;
+            }
+            b {
+                font-size: 1.1em;
+            }
+            .snippet {
+                margin-top: 5px;
+                color: #555;
+            }
+            #pagination {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                margin: 20px 0;
+            }
+            #pagination li {
+                cursor: pointer;
+                margin-left: 10px;
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                border-radius: 3px;
+            }
+            #pagination li.current {
+                font-weight: bold;
+                background-color: #f0f0f0;
+            }
+            .loading {
+                opacity: 0.2;
+                transition: opacity 0.3s ease;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="application/javascript">
+            function displayLoading(loading) {
+                const resultsList = $('ul').first();
+                if (loading) {
+                    resultsList.wrap('<div class="loading"></div>');
+                } else {
+                    resultsList.unwrap();
+                }
+            }
+
+            // create search form with pagination //
+            function createSearchForm() {
+                const form = $('<form>').append(
+                    $('<input>').attr('type', 'text').attr('placeholder', 'Search Wikipedia...'),
+                    $('<input>').attr('type', 'submit').attr('value', 'Search')
+                );
+                
+                const resultsList = $('<ul>').attr('id', 'results-list');
+                const paginationList = $('<ul>').attr('id', 'pagination');
+                
+                form.on('submit', function(e) {
+                    e.preventDefault();
+                    const searchTerm = $('input[type="text"]').val().trim();
+                    if (searchTerm) {
+                        resultsList.empty();
+                        paginationList.empty();
+                        queryWikipedia(searchTerm, 0);
+                    }
+                });
+                
+                $('body').append(form, resultsList, paginationList);
+            }
+
+            // add new article to results list //
+            function addNewArticle(id, title, snippet) {
+                const listItem = $('<li>').append(
+                    $('<p>').append(
+                        $('<span>').text(id + ' - '),
+                        $('<b>').text(title)
+                    ),
+                    $('<p>').addClass('snippet').html(snippet)
+                );
+                
+                $('#results-list').append(listItem);
+            }
+
+            function buildPagination(totalItems, itemsPerPage, currentOffset) {
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const currentPage = currentOffset / itemsPerPage + 1;
+                const paginationList = $('#pagination').empty();
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageItem = $('<li>')
+                        .text(i)
+                        .css('cursor', 'pointer')
+                        .css('margin-left', '10px');
+                    
+                    if (i === currentPage) {
+                        pageItem.addClass('current');
+                    }
+                    
+                    pageItem.on('click', function() {
+                        const searchTerm = $('input[type="text"]').val().trim();
+                        if (searchTerm) {
+                            $('#results-list').empty();
+                            queryWikipedia(searchTerm, (i - 1) * itemsPerPage);
+                        }
+                    });
+                    
+                    paginationList.append(pageItem);
+                }
+            }
+
+            // query Wikipedia API //
+            function queryWikipedia(search, offset = 0) {
+                // show loading state //
+                displayLoading(true);
+                
+                $.ajax({
+                    url: 'https://en.wikipedia.org/w/api.php',
+                    data: {
+                        action: 'query',
+                        list: 'search',
+                        srsearch: search,
+                        srlimit: 10,
+                        sroffset: offset,
+                        format: 'json',
+                        origin: '*'
+                    },
+                    dataType: 'jsonp',
+                    success: function(response) {
+                        displayLoading(false);
+                        
+                        if (response.query && response.query.search) {
+                            $('#results-list').empty();
+                            
+                            response.query.search.forEach(result => {
+                                addNewArticle(
+                                    result.pageid.toString(),
+                                    result.title,
+                                    result.snippet
+                                );
+                            });
+                            
+                            if (response.query.searchinfo.totalhits > 0) {
+                                buildPagination(
+                                    response.query.searchinfo.totalhits,
+                                    10,
+                                    offset
+                                );
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        displayLoading(false);
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            $(function() {
+                createSearchForm();
+            });
+        </script>
+    </body>
+</html>
