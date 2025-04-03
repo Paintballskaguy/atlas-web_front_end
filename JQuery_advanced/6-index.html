@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Task 6</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+        <style>
+            .delete-cell {
+                background-color: orange;
+                cursor: pointer;
+                text-align: center;
+                color: black;
+            }
+            table {
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            form {
+                margin-bottom: 15px;
+            }
+            input, select {
+                margin-right: 10px;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="application/javascript">
+            function createFamilyTree() {
+                $('body').append(
+                    $('<table>').append(
+                        $('<thead>').append(
+                            $('<tr>').append(
+                                $('<th>').text('Firstname'),
+                                $('<th>').text('Lastname'),
+                                $('<th>').text('Action')
+                            )
+                        ),
+                        $('<tbody>')
+                    )
+                );
+            }
+
+            function addNewMember(firstName, lastName, position = 'after') {
+                const newRow = $('<tr>').append(
+                    $('<td>').text(firstName),
+                    $('<td>').text(lastName),
+                    $('<td>').addClass('delete-cell').text('(x)')
+                        .click(function() {
+                            $(this).parent().remove();
+                        })
+                );
+
+                if (position === 'before') {
+                    $('tbody').prepend(newRow);  // Add at top
+                } else {
+                    $('tbody').append(newRow);   // Add at bottom
+                }
+            }
+
+            // function to create the form //
+            function createForm() {
+                const form = $('<form>').append(
+                    $('<input>').attr({
+                        type: 'text',
+                        placeholder: 'First Name',
+                        required: true
+                    }),
+                    $('<input>').attr({
+                        type: 'text',
+                        placeholder: 'Last Name',
+                        required: true
+                    }),
+                    $('<select>').append(
+                        $('<option>').val('after').text('After'),
+                        $('<option>').val('before').text('Before')
+                    ),
+                    $('<input>').attr({
+                        type: 'submit',
+                        value: 'Add Member'
+                    })
+                );
+
+                form.on('submit', function(e) {
+                    e.preventDefault();
+                    const firstName = $('input:nth-of-type(1)').val();  // First input
+                    const lastName = $('input:nth-of-type(2)').val();   // Second input
+                    const position = $('select').first().val();         // First select
+                    
+                    if (firstName && lastName) {
+                        addNewMember(firstName, lastName, position);
+                        $('input[type="text"]').val('');  // Clear inputs
+                    }
+                });
+
+                $('body').prepend(form);
+            }
+
+            //  ready //
+            $(function() {
+                createFamilyTree();
+                createForm();
+                
+                //add members //
+                addNewMember('Guillaume', 'Salva');
+                addNewMember('Arielle', 'Snizt');
+                addNewMember('Fanette', 'Snizt');
+                addNewMember('Gerard', 'Snizt');
+                addNewMember('Victor', 'Salva');
+            });
+        </script>
+    </body>
+</html>
