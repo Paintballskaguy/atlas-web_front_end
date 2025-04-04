@@ -20,7 +20,7 @@
 
             // list posts from server //
             function listPosts() {
-                $.get('http://127.0.0.1:5500/posts')
+                $.get('http://localhost:3000/posts')
                     .done(function(response) {
                         response.forEach(post => {
                             addPostRow(post);

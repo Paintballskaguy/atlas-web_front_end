@@ -23,7 +23,7 @@ const startTime = performance.now();
 // 100x loop counter //
 setTimeout(() => {
 for (let i = 0; i < 100; i++) {
-    void countPrimeNumbers();
+    countPrimeNumbers();
 }
 const endTime = performance.now();
 

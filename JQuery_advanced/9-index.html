@@ -49,23 +49,37 @@
                 background-color: #f0f0f0;
             }
             .loading {
-                opacity: 0.2;
-                transition: opacity 0.3s ease;
+                opacity: 0.5;
+                background-color: #f8f8f8;
+                padding: 20px;
+                border-radius: 5px;
+                transition: opacity 0.5s ease;
+                position: relative;
+                min-height: 200px;
+            }
+            .loading:after {
+                content: "Loading...";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #333;
+                font-weight: bold;
+                font-size: 1.2em;
             }
         </style>
     </head>
     <body>
         <script type="application/javascript">
             function displayLoading(loading) {
-                const resultsList = $('ul').first();
+                const resultsList = $('#results-list');
                 if (loading) {
                     resultsList.wrap('<div class="loading"></div>');
                 } else {
-                    resultsList.unwrap();
+                    resultsList.unwrap('.loading');
                 }
             }
 
-            // create search form with pagination //
             function createSearchForm() {
                 const form = $('<form>').append(
                     $('<input>').attr('type', 'text').attr('placeholder', 'Search Wikipedia...'),
@@ -88,7 +102,6 @@
                 $('body').append(form, resultsList, paginationList);
             }
 
-            // add new article to results list //
             function addNewArticle(id, title, snippet) {
                 const listItem = $('<li>').append(
                     $('<p>').append(
@@ -109,8 +122,7 @@
                 for (let i = 1; i <= totalPages; i++) {
                     const pageItem = $('<li>')
                         .text(i)
-                        .css('cursor', 'pointer')
-                        .css('margin-left', '10px');
+                        .css('cursor', 'pointer');
                     
                     if (i === currentPage) {
                         pageItem.addClass('current');
@@ -128,10 +140,12 @@
                 }
             }
 
-            // query Wikipedia API //
             function queryWikipedia(search, offset = 0) {
-                // show loading state //
                 displayLoading(true);
+                
+                // loading fad fix, hopefully //
+                const loadingStart = Date.now();
+                const minLoadingTime = 500;
                 
                 $.ajax({
                     url: 'https://en.wikipedia.org/w/api.php',
@@ -146,8 +160,6 @@
                     },
                     dataType: 'jsonp',
                     success: function(response) {
-                        displayLoading(false);
-                        
                         if (response.query && response.query.search) {
                             $('#results-list').empty();
                             
@@ -169,8 +181,15 @@
                         }
                     },
                     error: function(error) {
-                        displayLoading(false);
                         console.error('Error fetching data:', error);
+                    },
+                    complete: function() {
+                        const elapsed = Date.now() - loadingStart;
+                        const remainingDelay = Math.max(0, minLoadingTime - elapsed);
+                        
+                        setTimeout(function() {
+                            displayLoading(false);
+                        }, remainingDelay);
                     }
                 });
             }
