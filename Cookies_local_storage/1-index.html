@@ -29,8 +29,9 @@
       const firstname = document.getElementById('firstname').value;
       const email = document.getElementById('email').value;
       
+      // expiration set to 10 days //
       const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 1);
+      expirationDate.setDate(expirationDate.getDate() + 10);
       
       document.cookie = `firstname=${firstname}; expires=${expirationDate.toUTCString()}; path=/`;
       document.cookie = `email=${email}; expires=${expirationDate.toUTCString()}; path=/`;
